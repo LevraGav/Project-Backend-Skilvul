@@ -4,7 +4,6 @@ dotenv.config();
 
 // Import Module
 const express = require("express");
-const USER_MODEL = require("./models/user");
 const routes = require("./routes");
 
 const app = express();
