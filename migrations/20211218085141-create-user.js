@@ -24,10 +24,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING(40),
       },
-      conf_password: {
-        allowNull: false,
-        type: Sequelize.STRING(40),
-      },
       avatar: {
         type: Sequelize.ENUM("img1", "img2", "img3"),
       },
