@@ -1,9 +1,9 @@
 const express = require("express");
 const UserController = require("../controllers/user.controller");
-const rolesChecker = require("../middleware/roles-mid");
 const router = express.Router();
+// const roleChecker = require("../middleware/roles-mid");
 
-router.post("/", rolesChecker, UserController.createNewUser);
+router.post("/", UserController.createNewUser);
 router.get("/", UserController.getAllUser);
 router.get("/:id", UserController.getUserbyId);
 router.put("/:id", UserController.updateUserById);

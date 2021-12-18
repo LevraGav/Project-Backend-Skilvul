@@ -15,11 +15,18 @@ class UserController {
         createdAt: new Date(),
       };
 
-      await USER_MODEL.create(newUser);
-      res.status(200).send({
-        message: "Success Create One User",
-        newUser: newUser,
-      });
+      await USER_MODEL.create(newUser)
+        .then((result) => {
+          res.status(200).send({
+            message: "Success Create One User",
+            newUser: result,
+          });
+        })
+        .catch((error) => {
+          res.status(500).send({
+            error: error.message || "Internal Server Error",
+          });
+        });
     } catch (error) {
       res.status(500).send({
         error: error.message || "Internal Server Error",
