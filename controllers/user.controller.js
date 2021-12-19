@@ -1,4 +1,5 @@
 const USER_MODEL = require("../models").User;
+
 class UserController {
   // CREATE New User
   static async createNewUser(req, res) {
@@ -15,18 +16,12 @@ class UserController {
         createdAt: new Date(),
       };
 
-      await USER_MODEL.create(newUser)
-        .then((result) => {
-          res.status(200).send({
-            message: "Success Create One User",
-            newUser: result,
-          });
-        })
-        .catch((error) => {
-          res.status(500).send({
-            error: error.message || "Internal Server Error",
-          });
-        });
+      await USER_MODEL.create(newUser);
+
+      res.status(201).send({
+        message: "Success Create One User",
+        newUser: newUser,
+      });
     } catch (error) {
       res.status(500).send({
         error: error.message || "Internal Server Error",
@@ -85,16 +80,78 @@ class UserController {
 
   // UPDATE User by Id
   static async updateUserById(req, res) {
-    res.status(200).send({
-      message: "Ini controller untuk update User by id",
-    });
+    try {
+      const userID = req.params.id;
+      const { fullname, email, username, password, avatar, role } = req.body;
+
+      const updateUser = {
+        fullname: fullname,
+        email: email,
+        username: username,
+        password: password,
+        avatar: avatar,
+        role: role,
+        updatedAt: new Date(),
+      };
+
+      const foundID = await USER_MODEL.findOne({
+        where: {
+          id: Number(userID),
+        },
+      });
+
+      if (foundID) {
+        await USER_MODEL.update(updateUser, {
+          where: {
+            id: Number(userID),
+          },
+        });
+        res.status(200).send({
+          message: `Data User Id ${userID} was Updated Successfully`,
+          updateUser: updateUser,
+        });
+      } else {
+        res.status(404).send({
+          message: `Data User Id ${userID} Not Found`,
+        });
+      }
+    } catch (error) {
+      res.status(500).send({
+        error: error.message || "Internal Server Error",
+      });
+    }
   }
 
   // DELETE User by Id
   static async deleteUserById(req, res) {
-    res.status(200).send({
-      message: "Ini controller untuk delete User by id",
-    });
+    try {
+      const userID = req.params.id;
+
+      const foundID = await USER_MODEL.findOne({
+        where: {
+          id: Number(userID),
+        },
+      });
+
+      if (foundID) {
+        await USER_MODEL.destroy({
+          where: {
+            id: Number(userID),
+          },
+        });
+        res.status(200).send({
+          message: `Data User Id ${userID} was Deleted Successfully`,
+        });
+      } else {
+        res.status(404).send({
+          message: `Data User Id ${userID} Not Found`,
+        });
+      }
+    } catch (error) {
+      res.status(500).send({
+        error: error.message || "Internal Server Error",
+      });
+    }
   }
 }
 

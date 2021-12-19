@@ -6,18 +6,30 @@ dotenv.config();
 const express = require("express");
 const routes = require("./routes");
 
-const app = express();
 const port = process.env.PORT || 3000;
 
-// Middleware
-app.use(
-  express.urlencoded({
-    extended: true,
-  })
-);
-app.use(routes);
+async function main() {
+  try {
+    const app = express();
 
-// Running Server
-app.listen(port, () => {
-  console.log(`App is running on port ${port}`);
-});
+    // Middleware
+    app.use(
+      express.urlencoded({
+        extended: true,
+      })
+    );
+    app.use(express.json());
+    app.use(routes);
+
+    // Running Server
+    app.listen(port, () => {
+      console.log(`App is running on port ${port}`);
+    });
+  } catch (error) {
+    res.status(500).send({
+      error: error.message || "Internal Server Error",
+    });
+  }
+}
+
+main();
