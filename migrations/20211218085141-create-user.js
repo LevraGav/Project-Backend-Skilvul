@@ -27,8 +27,9 @@ module.exports = {
       avatar: {
         type: Sequelize.ENUM("img1", "img2", "img3"),
       },
-      role: {
-        type: Sequelize.ENUM("admin", "member"),
+      RoleId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
