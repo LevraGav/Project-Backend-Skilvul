@@ -61,6 +61,7 @@ class UserController {
           id: Number(userID),
         },
       });
+
       if (dataUser) {
         res.status(200).send({
           message: `Success Get User Id ${userID}`,
@@ -94,13 +95,13 @@ class UserController {
         updatedAt: new Date(),
       };
 
-      const foundID = await USER_MODEL.findOne({
+      const dataUser = await USER_MODEL.findOne({
         where: {
           id: Number(userID),
         },
       });
 
-      if (foundID) {
+      if (dataUser) {
         await USER_MODEL.update(updateUser, {
           where: {
             id: Number(userID),
@@ -108,7 +109,7 @@ class UserController {
         });
         res.status(200).send({
           message: `Data User Id ${userID} was Updated Successfully`,
-          updateUser: updateUser,
+          updateUser: dataUser,
         });
       } else {
         res.status(404).send({
@@ -127,13 +128,13 @@ class UserController {
     try {
       const userID = req.params.id;
 
-      const foundID = await USER_MODEL.findOne({
+      const dataUser = await USER_MODEL.findOne({
         where: {
           id: Number(userID),
         },
       });
 
-      if (foundID) {
+      if (dataUser) {
         await USER_MODEL.destroy({
           where: {
             id: Number(userID),
@@ -141,6 +142,7 @@ class UserController {
         });
         res.status(200).send({
           message: `Data User Id ${userID} was Deleted Successfully`,
+          deletedUser: dataUser,
         });
       } else {
         res.status(404).send({
