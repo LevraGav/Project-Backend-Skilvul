@@ -22,12 +22,12 @@ module.exports = {
       },
       password: {
         allowNull: false,
-        type: Sequelize.STRING(40),
+        type: Sequelize.STRING,
       },
       avatar: {
         type: Sequelize.ENUM("img1", "img2", "img3"),
       },
-      RoleId: {
+      roleId: {
         allowNull: false,
         type: Sequelize.INTEGER,
       },

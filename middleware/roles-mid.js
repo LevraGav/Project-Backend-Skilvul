@@ -1,9 +1,9 @@
 const rolesChecker = (req, res, next) => {
-  const allowedRoles = ["admin", "member"];
-  const { role } = req.body;
-  if (!allowedRoles.includes(role)) {
+  const allowedRoles = [1, 2];
+  const { roleId } = req.body;
+  if (!allowedRoles.includes(roleId)) {
     res.status(400).send({
-      error: "Roles must be admin or member",
+      error: "Roles must be 1 (admin) or 2 (member)",
     });
     return;
   }

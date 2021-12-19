@@ -3,7 +3,6 @@ const dotenv = require("dotenv");
 
 // Import Module
 const express = require("express");
-const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
 const routes = require("./routes");
 

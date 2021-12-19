@@ -1,34 +1,7 @@
 const USER_MODEL = require("../models").User;
+const { hashPassword } = require("../helpers/bcrypt");
 
 class UserController {
-  // CREATE New User
-  static async createNewUser(req, res) {
-    try {
-      const { fullname, email, username, password, avatar, role } = req.body;
-
-      const newUser = {
-        fullname: fullname,
-        email: email,
-        username: username,
-        password: password,
-        avatar: avatar,
-        role: role,
-        createdAt: new Date(),
-      };
-
-      await USER_MODEL.create(newUser);
-
-      res.status(201).send({
-        message: "Success Create One User",
-        newUser: newUser,
-      });
-    } catch (error) {
-      res.status(500).send({
-        error: error.message || "Internal Server Error",
-      });
-    }
-  }
-
   // GET All User
   static async getAllUser(req, res) {
     try {
@@ -83,18 +56,18 @@ class UserController {
   static async updateUserById(req, res) {
     try {
       const userID = req.params.id;
-      const { fullname, email, username, password, avatar, role } = req.body;
+      const hash = hashPassword(req.body.password);
+      const { fullname, email, username, avatar, roleId } = req.body;
 
       const updateUser = {
         fullname: fullname,
         email: email,
         username: username,
-        password: password,
+        password: hash,
         avatar: avatar,
-        role: role,
+        roleId: roleId,
         updatedAt: new Date(),
       };
-
       const dataUser = await USER_MODEL.findOne({
         where: {
           id: Number(userID),
@@ -116,6 +89,27 @@ class UserController {
           message: `Data User Id ${userID} Not Found`,
         });
       }
+      // USER_MODEL.findOne({
+      //   where: {
+      //     id: Number(userID),
+      //   },
+      // }).then((data) => {
+      //   if (data) {
+      //     USER_MODEL.update(updateUser, {
+      //       where: {
+      //         id: Number(userID),
+      //       },
+      //     });
+      //     res.status(200).send({
+      //       message: `Data User Id ${userID} was Updated Successfully`,
+      //       updatedUser: updateUser,
+      //     });
+      //   } else {
+      //     res.status(404).send({
+      //       message: `Data User Id ${userID} Not Found`,
+      //     });
+      //   }
+      // });
     } catch (error) {
       res.status(500).send({
         error: error.message || "Internal Server Error",
