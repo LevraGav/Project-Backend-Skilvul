@@ -1,9 +1,10 @@
 // Dotenv
 const dotenv = require("dotenv");
-dotenv.config();
 
 // Import Module
 const express = require("express");
+const jwt = require("jsonwebtoken");
+const bodyParser = require("body-parser");
 const routes = require("./routes");
 
 const port = process.env.PORT || 3000;
@@ -13,6 +14,7 @@ async function main() {
     const app = express();
 
     // Middleware
+    dotenv.config();
     app.use(
       express.urlencoded({
         extended: true,
@@ -20,6 +22,7 @@ async function main() {
     );
     app.use(express.json());
     app.use(routes);
+    app.use(bodyParser.json());
 
     // Running Server
     app.listen(port, () => {
