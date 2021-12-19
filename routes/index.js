@@ -13,7 +13,7 @@ router.get("/ping", (req, res) => {
 
 // Welcome Page
 router.get("/", (req, res) => {
-  res.send(`<h1>Welcome to Greecotopia!</h1>`);
+  res.send(`<h1>Hello Welcome to Greecotopia API!</h1>`);
 });
 
 // Path Users
