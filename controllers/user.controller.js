@@ -32,12 +32,12 @@ class UserController {
   // GET All User
   static async getAllUser(req, res) {
     try {
-      const userList = await USER_MODEL.findAll();
+      const dataUser = await USER_MODEL.findAll();
 
-      if (userList.length != 0) {
+      if (dataUser.length != 0) {
         res.status(200).send({
           message: "Success Get All Users",
-          users: userList,
+          users: dataUser,
         });
       } else {
         res.status(404).send({
@@ -109,7 +109,7 @@ class UserController {
         });
         res.status(200).send({
           message: `Data User Id ${userID} was Updated Successfully`,
-          updateUser: dataUser,
+          updatedUser: updateUser,
         });
       } else {
         res.status(404).send({
