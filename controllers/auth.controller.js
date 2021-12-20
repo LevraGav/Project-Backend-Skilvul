@@ -9,23 +9,42 @@ class AuthController {
       const { fullname, email, username, avatar, role_id } = req.body;
       const password = req.body.password;
 
+      const dataEmail = await User.findOne({
+        where: {
+          email,
+        },
+      });
+      const dataUsername = await User.findOne({
+        where: {
+          username,
+        },
+      });
+      // Data kosong?
       if (!fullname || !email || !username || !role_id) {
         res.status(400).send({
           error: "Field can't be empty",
         });
       } else {
-        if (password) {
-          req.body.password = hashPassword(password);
-          await User.create(req.body);
-
-          res.status(201).send({
-            message: "Success Register Account",
-            newUser: req.body,
+        // Check allowed username and email
+        if (dataEmail || dataUsername) {
+          res.status(400).send({
+            message: "Email or Username already exists",
           });
         } else {
-          res.status(401).send({
-            message: "Password can't be empty",
-          });
+          // Password Ada?
+          if (password) {
+            req.body.password = hashPassword(password);
+            await User.create(req.body);
+
+            res.status(201).send({
+              message: "Success Register Account",
+              newUser: req.body,
+            });
+          } else {
+            res.status(400).send({
+              message: "Password can't be empty",
+            });
+          }
         }
       }
     } catch (error) {
