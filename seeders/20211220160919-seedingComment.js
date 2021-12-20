@@ -16,12 +16,13 @@ module.exports = {
         context: "Issue ini sangat menarik",
         createdAt: new Date(),
         updatedAt: new Date(),
-        rep_comments: {
-          "uuid": '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
-          "context": "Setuju",
-          "author": 2,
-          "depends_on": 1
-        },
+        rep_comments: null,
+        // rep_comments: {
+        //   "uuid": '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
+        //   "context": "Setuju",
+        //   "author": 2,
+        //   "depends_on": 1
+        // },
         user_id: 1,
         issue_id: 1
       }
