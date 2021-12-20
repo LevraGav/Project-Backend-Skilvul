@@ -1,40 +1,11 @@
-const express = require('express')
-const forumRoutes = express.Router()
-const Forum = require('../models').Forum
+const express = require("express");
+const ForumController = require("../controllers/forum.controller");
+const router = express.Router();
 
-forumRoutes.use(express.json());
+router.post("/", ForumController.postNewForum);
+router.get("/", ForumController.getAllForum);
+router.get("/:id", ForumController.getForumbyId);
+router.put("/:id", ForumController.updateForumById);
+router.delete("/:id", ForumController.deleteForumById);
 
-forumRoutes.get('/', (req, res) => {
-  Forum.findAll()
-    .then((result) => {
-        res.send(result);
-    })
-    .catch((error) => res.send(error));
-})
-
-forumRoutes.get('/:id', (req, res) => {
-	Forum.findOne({
-    where: {
-      forum_id: Number(req.params.id),
-    },
-  }).then((result) => {
-        res.send(result);
-  })
-	.catch((error) => res.send(error));
-})
-
-forumRoutes.post('/', (req, res) => {
-  const newForum = {
-		title: req.body["title"],
-		image: req.body["image"],
-		description: req.body["description"],
-	};    
-	
-	Forum.create(newForum)
-		.then((result)=>{
-				res.send(result);
-		})
-		.catch(error => console.log(error))
-})
-
-module.exports = forumRoutes
+module.exports = router;
