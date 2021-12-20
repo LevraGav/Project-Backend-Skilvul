@@ -28,15 +28,16 @@ class UserController {
   static async getUserbyId(req, res) {
     try {
       const userID = req.params.id;
+      const account = req.userAccount;
 
       const dataUser = await USER_MODEL.findOne({
         where: {
           user_id: Number(userID),
         },
       });
-
       if (dataUser) {
         res.status(200).send({
+          status: `${account?.roleName}`,
           message: `Success Get User Id ${userID}`,
           users: dataUser,
         });
@@ -56,8 +57,8 @@ class UserController {
   static async updateUserById(req, res) {
     try {
       const userID = req.params.id;
+      const account = req.userAccount;
 
-      // const { fullname, email, username, avatar, role_id } = req.body;
       const password = req.body.password;
       if (password) {
         req.body.password = hashPassword(password);
@@ -76,6 +77,7 @@ class UserController {
           },
         });
         res.status(200).send({
+          status: `${account?.roleName}`,
           message: `Data User Id ${userID} was Updated Successfully`,
           updatedUser: req.body,
         });

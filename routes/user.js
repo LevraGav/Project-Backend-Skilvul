@@ -1,11 +1,18 @@
 const express = require("express");
-const UserController = require("../controllers/user.controller");
 const router = express.Router();
-const roleChecker = require("../middleware/roles-mid");
 
-router.get("/", UserController.getAllUser); // semua user yang udah login
-router.get("/:id", UserController.getUserbyId); // admin atau member yang punya id tersebut
-router.put("/:id", UserController.updateUserById); // admin atau member yang punya id tersebut
-router.delete("/:id", UserController.deleteUserById); // admin atau member yang punya id tersebut
+const UserController = require("../controllers/user.controller");
+const authentication = require("../middleware/authentication");
+const authorization = require("../middleware/authorization");
+
+// Authentication
+router.use(authentication);
+router.get("/", UserController.getAllUser);
+
+// Authorization
+router.use("/:id", authorization);
+router.get("/:id", UserController.getUserbyId);
+router.put("/:id", UserController.updateUserById);
+router.delete("/:id", UserController.deleteUserById);
 
 module.exports = router;
