@@ -6,8 +6,9 @@ const rolesChecker = (req, res, next) => {
       error: "Roles must be 1 (admin) or 2 (member)",
     });
     return;
+  } else {
+    next();
   }
-  next();
 };
 
 module.exports = rolesChecker;

@@ -56,18 +56,11 @@ class UserController {
   static async updateUserById(req, res) {
     try {
       const userID = req.params.id;
-      const hash = hashPassword(req.body.password);
-      const { fullname, email, username, avatar, roleId } = req.body;
+      const password = req.body.password;
+      if (password) {
+        req.body.password = hashPassword(password);
+      }
 
-      const updateUser = {
-        fullname: fullname,
-        email: email,
-        username: username,
-        password: hash,
-        avatar: avatar,
-        roleId: roleId,
-        updatedAt: new Date(),
-      };
       const dataUser = await USER_MODEL.findOne({
         where: {
           id: Number(userID),
@@ -75,14 +68,14 @@ class UserController {
       });
 
       if (dataUser) {
-        await USER_MODEL.update(updateUser, {
+        await USER_MODEL.update(req.body, {
           where: {
             id: Number(userID),
           },
         });
         res.status(200).send({
           message: `Data User Id ${userID} was Updated Successfully`,
-          updatedUser: updateUser,
+          updatedUser: req.body,
         });
       } else {
         res.status(404).send({
