@@ -3,7 +3,7 @@ const ForumController = require("../controllers/forum.controller");
 const router = express.Router();
 
 router.post("/", ForumController.postNewForum);
-router.get("/", ForumController.getAllForum);
+router.get("/", ForumController.getAllForums);
 router.get("/:id", ForumController.getForumbyId);
 router.put("/:id", ForumController.updateForumById);
 router.delete("/:id", ForumController.deleteForumById);

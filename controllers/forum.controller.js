@@ -25,7 +25,7 @@ class ForumController {
   }
 
   // GET All Forum
-  static async getAllForum(req, res) {
+  static async getAllForums(req, res) {
     try {
       const dataForum = await FORUM_MODEL.findAll();
 
