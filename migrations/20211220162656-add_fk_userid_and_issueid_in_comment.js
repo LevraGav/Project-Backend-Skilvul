@@ -14,7 +14,7 @@ module.exports = {
       name: 'fk_user_in_comment',
       references: { //Required field
         table: 'Users',
-        field: 'user_id'
+        field: 'id'
       },
       onDelete: 'cascade',
       onUpdate: 'cascade'
