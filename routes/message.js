@@ -1,28 +1,8 @@
-const express = require('express')
-const messageRoutes = express.Router()
-const Message = require('../models').Message
+const express = require("express");
+const MessageController = require("../controllers/message.controller");
+const router = express.Router();
 
-messageRoutes.use(express.json());
+router.get("/", MessageController.getAllMessage);
+router.post("/", MessageController.postNewMessage);
 
-messageRoutes.get('/', (req, res) => {
-  Message.findAll()
-    .then((result) => {
-        res.send(result);
-    })
-    .catch((error) => res.send(error));
-})
-
-messageRoutes.post('/', (req, res) => {
-  const newMessage = {
-		context: req.body["context"],
-        user_id: req.body["message"]
-	};    
-	
-	Message.create(newMessage)
-		.then((result)=>{
-			res.send(result);
-		})
-		.catch(error => console.log(error))
-})
-
-module.exports = messageRoutes
+module.exports = router;
