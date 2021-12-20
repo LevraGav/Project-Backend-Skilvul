@@ -6,8 +6,6 @@ class TagController {
     try{
       const newTag = {
         title: req.body.title,
-				image: req.body.image,
-				description: req.body.description
       }
       TAG_MODEL.create(newTag)
         .then(result => {
@@ -24,8 +22,8 @@ class TagController {
     }
   }
 
-  // GET All Tag
-  static async getAllTag(req, res) {
+  // GET All Tags
+  static async getAllTags(req, res) {
     try {
       const dataTag = await TAG_MODEL.findAll();
 
