@@ -8,21 +8,26 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
       User.belongsTo(models.Role, {
-        foreignKey: "roleId",
-        targetKey: "id",
+        foreignKey: "role_id",
+        targetKey: "role_id",
       });
     }
   }
   User.init(
     {
+      user_id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: DataTypes.INTEGER,
+      },
       fullname: DataTypes.STRING,
       email: DataTypes.STRING,
       username: DataTypes.STRING,
       password: DataTypes.STRING,
       avatar: DataTypes.ENUM("img1", "img2", "img3"),
-      roleId: DataTypes.INTEGER,
+      role_id: DataTypes.INTEGER,
     },
     {
       sequelize,

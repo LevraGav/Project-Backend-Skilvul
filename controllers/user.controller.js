@@ -31,7 +31,7 @@ class UserController {
 
       const dataUser = await USER_MODEL.findOne({
         where: {
-          id: Number(userID),
+          user_id: Number(userID),
         },
       });
 
@@ -56,6 +56,8 @@ class UserController {
   static async updateUserById(req, res) {
     try {
       const userID = req.params.id;
+
+      // const { fullname, email, username, avatar, role_id } = req.body;
       const password = req.body.password;
       if (password) {
         req.body.password = hashPassword(password);
@@ -63,14 +65,14 @@ class UserController {
 
       const dataUser = await USER_MODEL.findOne({
         where: {
-          id: Number(userID),
+          user_id: Number(userID),
         },
       });
 
       if (dataUser) {
         await USER_MODEL.update(req.body, {
           where: {
-            id: Number(userID),
+            user_id: Number(userID),
           },
         });
         res.status(200).send({
@@ -82,27 +84,6 @@ class UserController {
           message: `Data User Id ${userID} Not Found`,
         });
       }
-      // USER_MODEL.findOne({
-      //   where: {
-      //     id: Number(userID),
-      //   },
-      // }).then((data) => {
-      //   if (data) {
-      //     USER_MODEL.update(updateUser, {
-      //       where: {
-      //         id: Number(userID),
-      //       },
-      //     });
-      //     res.status(200).send({
-      //       message: `Data User Id ${userID} was Updated Successfully`,
-      //       updatedUser: updateUser,
-      //     });
-      //   } else {
-      //     res.status(404).send({
-      //       message: `Data User Id ${userID} Not Found`,
-      //     });
-      //   }
-      // });
     } catch (error) {
       res.status(500).send({
         error: error.message || "Internal Server Error",
@@ -117,14 +98,14 @@ class UserController {
 
       const dataUser = await USER_MODEL.findOne({
         where: {
-          id: Number(userID),
+          user_id: Number(userID),
         },
       });
 
       if (dataUser) {
         await USER_MODEL.destroy({
           where: {
-            id: Number(userID),
+            user_id: Number(userID),
           },
         });
         res.status(200).send({

@@ -4,7 +4,7 @@ const AuthController = require("../controllers/auth.controller");
 const roleChecker = require("../middleware/roles-mid");
 
 // Register
-router.post("/signup", roleChecker, AuthController.Register);
+router.post("/signup", AuthController.Register);
 
 // Login
 router.post("/login", AuthController.Login);

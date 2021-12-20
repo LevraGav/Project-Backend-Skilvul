@@ -8,16 +8,21 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
       Role.hasMany(models.User, {
-        sourceKey: "id",
-        foreignKey: "roleId",
+        sourceKey: "role_id",
+        foreignKey: "role_id",
       });
     }
   }
   Role.init(
     {
-      name: DataTypes.STRING,
+      role_id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: DataTypes.INTEGER,
+      },
+      name: DataTypes.STRING(40),
     },
     {
       sequelize,

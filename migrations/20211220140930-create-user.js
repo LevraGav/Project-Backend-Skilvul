@@ -2,7 +2,7 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable("Users", {
-      id: {
+      user_id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
@@ -27,8 +27,7 @@ module.exports = {
       avatar: {
         type: Sequelize.ENUM("img1", "img2", "img3"),
       },
-      roleId: {
-        allowNull: false,
+      role_id: {
         type: Sequelize.INTEGER,
       },
       createdAt: {

@@ -3,13 +3,13 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.addConstraint("Users", {
-      fields: ["roleId"],
+      fields: ["role_id"],
       type: "foreign key",
       name: "fk_roleId_in_Users",
       references: {
         //Required field
         table: "Roles",
-        field: "id",
+        field: "role_id",
       },
       onDelete: "cascade",
       onUpdate: "cascade",
