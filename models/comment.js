@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Comment.init({
+    comment_id: DataTypes.INTEGER,
     context: DataTypes.STRING,
     rep_comments: DataTypes.JSON,
     user_id: DataTypes.INTEGER,
@@ -22,5 +23,6 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Comment',
   });
+  Comment.removeAttribute('id')
   return Comment;
 };
