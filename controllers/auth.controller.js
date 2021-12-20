@@ -81,33 +81,6 @@ class AuthController {
           message: "Invalid Username or Password!",
         });
       }
-      // .then((data) => {
-      //   const { id, email, username, role_id } = data;
-      //   const checkPw = comparePassword(password, data.password);
-      //   if (checkPw) {
-      //     const payload = {
-      //       id,
-      //       email,
-      //       username,
-      //       role_id,
-      //       roleName: Role?.name || null,
-      //     };
-      //     const accessToken = generateToken(payload);
-      //     res.status(200).send({
-      //       message: "Login Success!",
-      //       token: accessToken,
-      //     });
-      //   } else {
-      //     res.status(401).send({
-      //       message: "Invalid Username or Password!",
-      //     });
-      //   }
-      // })
-      // .catch((error) => {
-      //   res.status(500).send({
-      //     error: error.message || "Internal Server Error",
-      //   });
-      // });
     }
   }
 }

@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const AuthController = require("../controllers/auth.controller");
-const roleChecker = require("../middleware/roles-mid");
+const avatarChecker = require("../middleware/avatar-mid");
 
 // Register
-router.post("/signup", AuthController.Register);
+router.post("/signup", avatarChecker, AuthController.Register);
 
 // Login
 router.post("/login", AuthController.Login);
