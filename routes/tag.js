@@ -1,38 +1,11 @@
-const express = require('express')
-const tagRoutes = express.Router()
-const Tag = require('../models').Tag
+const express = require("express");
+const TagController = require("../controllers/tag.controller");
+const router = express.Router();
 
-tagRoutes.use(express.json());
+router.post("/", TagController.postNewTag);
+router.get("/", TagController.getAllTag);
+router.get("/:id", TagController.getTagbyId);
+router.put("/:id", TagController.updateTagById);
+router.delete("/:id", TagController.deleteTagById);
 
-tagRoutes.get('/', (req, res) => {
-  Tag.findAll()
-    .then((result) => {
-        res.send(result);
-    })
-    .catch((error) => res.send(error));
-})
-
-tagRoutes.get('/:id', (req, res) => {
-	Tag.findOne({
-    where: {
-      tag_id: Number(req.params.id),
-    },
-  }).then((result) => {
-        res.send(result);
-  })
-	.catch((error) => res.send(error));
-})
-
-tagRoutes.post('/', (req, res) => {
-  const newTag = {
-		title: req.body["title"]
-	};    
-	
-	Tag.create(newTag)
-		.then((result)=>{
-			res.send(result);
-		})
-		.catch(error => console.log(error))
-})
-
-module.exports = tagRoutes
+module.exports = router;
