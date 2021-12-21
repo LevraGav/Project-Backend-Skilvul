@@ -1,7 +1,11 @@
 const express = require("express");
-const CommentController = require("../controllers/comment.controller");
 const router = express.Router();
 
+const CommentController = require("../controllers/comment.controller");
+const authentication = require("../middleware/authentication");
+
+// Authentication
+router.use(authentication);
 router.get("/", CommentController.getAllComments);
 router.get("/:id", CommentController.getCommentById);
 router.post("/", CommentController.postNewComment);
