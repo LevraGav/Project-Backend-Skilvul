@@ -1,23 +1,25 @@
 const COMMENT_MODEL = require("../models").Comment;
+const { v4: uuidV4 } = require('uuid')
 
 class CommentController {
   // POST New Comment
 	static postNewComment(req, res) {
     try{
-      const { context, user_id, issue_id } = req.body
+      const { context, issue_id } = req.body
 
       const newComment = {
         context: context,
         createdAt: new Date(),
         updatedAt: new Date(),
         rep_comments: null,
-        user_id: user_id,
+        user_id: req.userAccount.user_id,
         issue_id: issue_id
       }
+
       COMMENT_MODEL.create(newComment)
         .then(result => {
         res.status(200).json({ 
-          message: 'Success post new Comment!', 
+          message: 'New Comment was posted successfully!', 
           result 
          })
         })
@@ -41,23 +43,33 @@ class CommentController {
       const rep_comments = comments.rep_comments
 
       const newRepComment = {
-        uuid: generate(uuidv4), // https://www.npmjs.com/package/uuid
+        uuid: uuidV4(),
         context: req.body.context,
-        author: req.body.author,
+        author: {
+          user_id: req.userAccount.user_id,
+          username: req.userAccount.username,
+          avatar: req.userAccount.avatar
+        },
         depends_on: {
           author: req.body.depends_on.author,
-          // uuid: req.body.depends_on.uuid
+          uuid: req.body.depends_on.uuid
         }
       }
 
-      const new_rep_comment = [ ...rep_comments, newRepComment]
-      await Comment.update({
+      const new_rep_comment = rep_comments?([ ...rep_comments, newRepComment]):([newRepComment])
+      await COMMENT_MODEL.update({
         rep_comments: new_rep_comment
       }, {
         where: {
           comment_id: req.params.id
         }
       })
+      res.status(200).send(
+        {
+          message: "New reply comment was posted successfully!",
+          data: newRepComment
+        }
+      )
     } catch(error){
       res.status(500).send({
         error: error.message || "Internal Server Error",
@@ -71,9 +83,20 @@ class CommentController {
       const dataComment = await COMMENT_MODEL.findAll();
 
       if (dataComment.length != 0) {
+        const result = dataComment.map(comment => {
+          const { context, createdAt, updatedAt, rep_comments, user_id, issue_id} = comment
+          return { 
+            context, 
+            createdAt, 
+            updatedAt, 
+            rep_comments : rep_comments?(JSON.parse(rep_comments)):([]), 
+            user_id, 
+            issue_id
+          }
+        })
         res.status(200).send({
           message: "Success Get All Comments",
-          comments: dataComment,
+          comments: result,
         });
       } else {
         res.status(404).send({

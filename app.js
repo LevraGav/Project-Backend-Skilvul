@@ -1,19 +1,19 @@
 // Dotenv
 const dotenv = require("dotenv");
+dotenv.config();
 
 // Import Module
 const express = require("express");
 const bodyParser = require("body-parser");
 const routes = require("./routes");
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 
 async function main() {
   try {
     const app = express();
 
     // Middleware
-    dotenv.config();
     app.use(
       express.urlencoded({
         extended: true,
