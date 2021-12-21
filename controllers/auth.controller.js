@@ -6,7 +6,7 @@ const { generateToken } = require("../helpers/jwt");
 
 class AuthController {
   // Register
-  static async Register(req, res, next) {
+  static async Register(req, res) {
     try {
       const { fullname, email, username, password, avatar } = req.body;
 
@@ -37,7 +37,6 @@ class AuthController {
             username,
             password,
             avatar,
-            role_id: 2,
           });
 
           res.status(201).send({
@@ -85,11 +84,12 @@ class AuthController {
         const checkPw = comparePassword(password, dataUser.password);
         if (checkPw) {
           // jika password benar
-          const { user_id, email, username, role_id, Role } = dataUser;
+          const { user_id, email, username, avatar, role_id, Role } = dataUser;
           const token = {
             user_id,
             email,
             username,
+            avatar,
             role_id,
             roleName: Role?.name || null,
           };

@@ -4,7 +4,6 @@ const router = express.Router();
 const UserController = require("../controllers/user.controller");
 const authentication = require("../middleware/authentication");
 const authorization = require("../middleware/authorization");
-// const avatarChecker = require("../middleware/avatar-mid");
 
 // Authentication
 router.use(authentication);
