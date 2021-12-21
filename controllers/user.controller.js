@@ -6,7 +6,11 @@ class UserController {
   // GET All User
   static async getAllUser(req, res) {
     try {
-      const dataUser = await USER_MODEL.findAll();
+      const dataUser = await USER_MODEL.findAll({
+        attributes: {
+          exclude: ["password"],
+        },
+      });
 
       if (dataUser.length != 0) {
         res.status(200).send({
@@ -33,6 +37,10 @@ class UserController {
       const dataUser = await USER_MODEL.findOne({
         where: {
           user_id: Number(userID),
+        },
+
+        attributes: {
+          exclude: ["password"],
         },
       });
       if (dataUser) {
@@ -77,6 +85,17 @@ class UserController {
           [Op.or]: filterQuery,
         },
       });
+
+      if (password) {
+        const account = req.userAccount;
+        if (Number(userID) !== Number(account?.user_id)) {
+          res.status(400).send({
+            message: "Password unchange",
+          });
+        } else {
+          req.body.password = hashPassword(password);
+        }
+      }
 
       if (dataUser) {
         if (existingUser && Number(userID) !== Number(existingUser.user_id)) {
