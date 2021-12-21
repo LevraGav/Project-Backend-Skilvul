@@ -44,7 +44,17 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      password: DataTypes.STRING,
+      password: {
+        type: DataTypes.STRING,
+        validate: {
+          is: {
+            args: [
+              "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[/!@#$%^&*.])(?=.{8,})",
+            ],
+            msg: "Password minimal 8 karater terdiri dari huruf besar dan kecil, angka, simbol(!@#$%^&*)",
+          },
+        },
+      },
       avatar: {
         type: DataTypes.ENUM("img1", "img2", "img3"),
         validate: {
@@ -59,6 +69,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       hooks: {
         beforeCreate(model) {
+          model.password = hashPassword(model.password);
           if (!model.avatar) {
             model.avatar = "img1";
           }

@@ -1,7 +1,7 @@
 const { User, Role } = require("../models");
 const { Op } = require("sequelize");
 
-const { hashPassword, comparePassword } = require("../helpers/bcrypt");
+const { comparePassword } = require("../helpers/bcrypt");
 const { generateToken } = require("../helpers/jwt");
 
 class AuthController {
@@ -24,26 +24,30 @@ class AuthController {
             },
           },
         });
-
         // Check allowed username and email
         if (dataUsers) {
           res.status(400).send({
             message: "Email or Username already exists",
           });
+          return;
         } else {
-          const newUser = {
+          const newUser = await User.create({
             fullname,
             email,
             username,
-            password: hashPassword(password),
+            password,
             avatar,
             role_id: 2,
-          };
+          });
 
-          await User.create(newUser);
           res.status(201).send({
             message: "Success Register Account",
-            newUser: newUser,
+            newUser: {
+              user_id: newUser.user_id,
+              fullname,
+              username,
+              email,
+            },
           });
         }
       }
