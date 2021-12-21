@@ -1,7 +1,11 @@
 const express = require("express");
-const MessageController = require("../controllers/message.controller");
 const router = express.Router();
 
+const MessageController = require("../controllers/message.controller");
+const authentication = require("../middleware/authentication");
+
+// Authentication
+router.use(authentication);
 router.get("/", MessageController.getAllMessage);
 router.post("/", MessageController.postNewMessage);
 

@@ -6,7 +6,7 @@ class MessageController {
     try{
       const newMessage = {
         context: req.body.context,
-        user_id: req.user.id
+        user_id: req.userAccount.user_id
       }
       MESSAGE_MODEL.create(newMessage)
         .then(result => {
