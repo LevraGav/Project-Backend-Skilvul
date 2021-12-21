@@ -1,76 +1,61 @@
 const { User, Role } = require("../models");
+const { Op } = require("sequelize");
+
 const { hashPassword, comparePassword } = require("../helpers/bcrypt");
 const { generateToken } = require("../helpers/jwt");
-const avatarChecker = require("../middleware/avatar-mid");
 
 class AuthController {
   // Register
   static async Register(req, res, next) {
     try {
-      const { fullname, email, username, avatar, role_id } = req.body;
-      const password = req.body.password;
+      const { fullname, email, username, password, avatar } = req.body;
 
-      const dataEmail = await User.findOne({
-        where: {
-          email,
-        },
-      });
-      const dataUsername = await User.findOne({
-        where: {
-          username,
-        },
-      });
       // Data kosong?
-      if (!fullname || !email || !username || !role_id) {
+      if (!fullname || !email || !username || !password) {
         res.status(400).send({
-          error: "Field can't be empty",
+          error: "'fullname', 'email', 'username', 'password' can't be empty",
         });
       } else {
+        const dataUsers = await User.findOne({
+          where: {
+            [Op.or]: {
+              email,
+              username,
+            },
+          },
+        });
+
         // Check allowed username and email
-        if (dataEmail || dataUsername) {
+        if (dataUsers) {
           res.status(400).send({
             message: "Email or Username already exists",
           });
         } else {
-          // Password Ada?
-          if (password) {
-            req.body.password = hashPassword(password);
-            // Avatar Ada?
-            if (avatar) {
-              const allowedAvatar = await User.findOne({
-                where: {
-                  avatar: ["img1", "img2", "img3"],
-                },
-              });
-              if (!allowedAvatar) {
-                res.status(400).send({
-                  error: "You can only select avatar 'img1', 'img2', 'img3'",
-                });
-              } else {
-                await User.create(req.body);
-                res.status(201).send({
-                  message: "Success Register Account",
-                  newUser: req.body,
-                });
-              }
-            } else {
-              await User.create(req.body);
-              res.status(201).send({
-                message: "Success Register Account",
-                newUser: req.body,
-              });
-            }
-          } else {
-            res.status(400).send({
-              message: "Password can't be empty",
-            });
-          }
+          const newUser = {
+            fullname,
+            email,
+            username,
+            password: hashPassword(password),
+            avatar,
+            role_id: 2,
+          };
+
+          await User.create(newUser);
+          res.status(201).send({
+            message: "Success Register Account",
+            newUser: newUser,
+          });
         }
       }
     } catch (error) {
-      res.status(500).send({
-        error: error.message || "Internal Server Error",
-      });
+      if (error.name === "SequelizeValidationError") {
+        const messages = error.errors.map((err) => err.message);
+        res.status(400).json({ messages });
+      } else {
+        res.status(500).send({
+          error: error.message || "Internal Server Error",
+        });
+      }
     }
   }
 

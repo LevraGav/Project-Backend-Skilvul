@@ -23,13 +23,50 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
       },
       fullname: DataTypes.STRING,
-      email: DataTypes.STRING,
-      username: DataTypes.STRING,
+      email: {
+        type: DataTypes.STRING,
+        validate: {
+          isEmail: {
+            args: true,
+            msg: "Invalid Format Email. Example: foo@bar.com",
+          },
+        },
+      },
+      username: {
+        type: DataTypes.STRING,
+        validate: {
+          is: {
+            args: /^\S+$/,
+            msg: `Username can't contain whitespace`,
+          },
+          notEmpty: {
+            msg: `Username can't be empty`,
+          },
+        },
+      },
       password: DataTypes.STRING,
-      avatar: DataTypes.ENUM("img1", "img2", "img3"),
+      avatar: {
+        type: DataTypes.ENUM("img1", "img2", "img3"),
+        validate: {
+          isIn: {
+            args: [["img1", "img2", "img3"]],
+            msg: "You can only select avatar 'img1', 'img2', 'img3'",
+          },
+        },
+      },
       role_id: DataTypes.INTEGER,
     },
     {
+      hooks: {
+        beforeCreate(model) {
+          if (!model.avatar) {
+            model.avatar = "img1";
+          }
+          if (!model.role_id) {
+            model.role_id = 2;
+          }
+        },
+      },
       sequelize,
       modelName: "User",
     }

@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const USER_MODEL = require("../models").User;
 const { hashPassword } = require("../helpers/bcrypt");
 
@@ -59,32 +60,34 @@ class UserController {
       const userID = req.params.id;
       const account = req.userAccount;
 
-      const password = req.body.password;
-      if (password) {
-        req.body.password = hashPassword(password);
-      }
+      const { fullname, email, username, password, avatar, role_id } = req.body;
 
       const dataUser = await USER_MODEL.findOne({
         where: {
           user_id: Number(userID),
         },
       });
+      const filterQuery = {};
+      if (username) {
+        filterQuery.username = username;
+      }
+      if (email) {
+        filterQuery.email = email;
+      }
 
-      const { email, username } = req.body;
-      const dataEmail = await USER_MODEL.findOne({
+      const existingUser = await USER_MODEL.findOne({
         where: {
-          email,
+          [Op.or]: filterQuery,
         },
       });
 
-      const dataUsername = await USER_MODEL.findOne({
-        where: {
-          username,
-        },
-      });
+      // Password Ada?
+      if (password) {
+        req.body.password = hashPassword(password);
+      }
 
       if (dataUser) {
-        if (email === dataEmail || username === dataUsername) {
+        if (existingUser && Number(userID) !== Number(existingUser.user_id)) {
           res.status(400).send({
             message: "Email or Username already exists",
           });
