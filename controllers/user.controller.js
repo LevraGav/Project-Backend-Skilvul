@@ -70,17 +70,36 @@ class UserController {
         },
       });
 
+      const { email, username } = req.body;
+      const dataEmail = await USER_MODEL.findOne({
+        where: {
+          email,
+        },
+      });
+
+      const dataUsername = await USER_MODEL.findOne({
+        where: {
+          username,
+        },
+      });
+
       if (dataUser) {
-        await USER_MODEL.update(req.body, {
-          where: {
-            user_id: Number(userID),
-          },
-        });
-        res.status(200).send({
-          status: `${account?.roleName}`,
-          message: `Data User Id ${userID} was Updated Successfully`,
-          updatedUser: req.body,
-        });
+        if (email === dataEmail || username === dataUsername) {
+          res.status(400).send({
+            message: "Email or Username already exists",
+          });
+        } else {
+          await USER_MODEL.update(req.body, {
+            where: {
+              user_id: Number(userID),
+            },
+          });
+          res.status(200).send({
+            status: `${account?.roleName}`,
+            message: `Data User Id ${userID} was Updated Successfully`,
+            updatedUser: req.body,
+          });
+        }
       } else {
         res.status(404).send({
           message: `Data User Id ${userID} Not Found`,

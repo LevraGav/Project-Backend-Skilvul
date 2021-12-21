@@ -1,10 +1,11 @@
 const { User, Role } = require("../models");
 const { hashPassword, comparePassword } = require("../helpers/bcrypt");
 const { generateToken } = require("../helpers/jwt");
+const avatarChecker = require("../middleware/avatar-mid");
 
 class AuthController {
   // Register
-  static async Register(req, res) {
+  static async Register(req, res, next) {
     try {
       const { fullname, email, username, avatar, role_id } = req.body;
       const password = req.body.password;
@@ -34,12 +35,31 @@ class AuthController {
           // Password Ada?
           if (password) {
             req.body.password = hashPassword(password);
-            await User.create(req.body);
-
-            res.status(201).send({
-              message: "Success Register Account",
-              newUser: req.body,
-            });
+            // Avatar Ada?
+            if (avatar) {
+              const allowedAvatar = await User.findOne({
+                where: {
+                  avatar: ["img1", "img2", "img3"],
+                },
+              });
+              if (!allowedAvatar) {
+                res.status(400).send({
+                  error: "You can only select avatar 'img1', 'img2', 'img3'",
+                });
+              } else {
+                await User.create(req.body);
+                res.status(201).send({
+                  message: "Success Register Account",
+                  newUser: req.body,
+                });
+              }
+            } else {
+              await User.create(req.body);
+              res.status(201).send({
+                message: "Success Register Account",
+                newUser: req.body,
+              });
+            }
           } else {
             res.status(400).send({
               message: "Password can't be empty",
