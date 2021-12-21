@@ -29,7 +29,6 @@ class UserController {
   static async getUserbyId(req, res) {
     try {
       const userID = req.params.id;
-      const account = req.userAccount;
 
       const dataUser = await USER_MODEL.findOne({
         where: {
@@ -38,7 +37,6 @@ class UserController {
       });
       if (dataUser) {
         res.status(200).send({
-          status: `${account?.roleName}`,
           message: `Success Get User Id ${userID}`,
           users: dataUser,
         });
@@ -58,7 +56,6 @@ class UserController {
   static async updateUserById(req, res) {
     try {
       const userID = req.params.id;
-      const account = req.userAccount;
 
       const { fullname, email, username, password, avatar, role_id } = req.body;
 
@@ -81,11 +78,6 @@ class UserController {
         },
       });
 
-      // Password Ada?
-      if (password) {
-        req.body.password = hashPassword(password);
-      }
-
       if (dataUser) {
         if (existingUser && Number(userID) !== Number(existingUser.user_id)) {
           res.status(400).send({
@@ -98,9 +90,8 @@ class UserController {
             },
           });
           res.status(200).send({
-            status: `${account?.roleName}`,
             message: `Data User Id ${userID} was Updated Successfully`,
-            updatedUser: req.body,
+            updatedData: req.body,
           });
         }
       } else {

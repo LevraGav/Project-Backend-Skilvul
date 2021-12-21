@@ -37,8 +37,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         validate: {
           is: {
-            args: /^\S+$/,
-            msg: `Username can't contain whitespace`,
+            args: ["^[^0-9][^/_!@#$%^&*.]{5,}"],
+            msg: `Username minimal 6 karakter, huruf pertama tidak boleh angka, tidak boleh mengandung simbol`,
           },
           notEmpty: {
             msg: `Username can't be empty`,
@@ -53,6 +53,9 @@ module.exports = (sequelize, DataTypes) => {
               "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[/!@#$%^&*.])(?=.{8,})",
             ],
             msg: "Password minimal 8 karater terdiri dari huruf besar dan kecil, angka, simbol(!@#$%^&*)",
+          },
+          notEmpty: {
+            msg: `Password can't be empty`,
           },
         },
       },
