@@ -7,6 +7,7 @@ const userRoutes = require("./user");
 const authRoutes = require("./auth");
 const forumRoutes = require("./forum");
 const tagRoutes = require("./tag");
+const commentRoutes = require("./comment");
 const messageRoutes = require("./message");
 
 // Check ping
@@ -29,6 +30,8 @@ router.use("/users", userRoutes);
 router.use("/forums", forumRoutes);
 // Path Tags
 router.use("/tags", tagRoutes);
+// Path Comments
+router.use("/comments", commentRoutes);
 // Path Messages
 router.use("/messages", messageRoutes);
 

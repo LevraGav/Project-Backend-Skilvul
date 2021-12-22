@@ -1,2 +1,6 @@
 node_modules
+<<<<<<< HEAD:.gitignore
 .env
+=======
+.env
+>>>>>>> 0d681440a713cff1cc8a695a74108a1e63c0b10d:node_modules/resolve/.eslintignore
