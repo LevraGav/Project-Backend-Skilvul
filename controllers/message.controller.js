@@ -44,6 +44,39 @@ class MessageController {
       });
     }
   }
+
+  //DELETE Messages by Id
+  static async deleteMessageById(req, res) {
+    try {
+      const messageID = req.params.id;
+
+      const dataMessage = await MESSAGE_MODEL.findOne({
+        where: {
+          message_id: Number(messageID),
+        },
+      });
+
+      if (dataMessage) {
+        await MESSAGE_MODEL.destroy({
+          where: {
+            message_id: Number(messageID),
+          },
+        });
+        res.status(200).send({
+          message: `Data Message where Id ${messageID} was Deleted Successfully`,
+          deletedMessage: dataMessage,
+        });
+      } else {
+        res.status(404).send({
+          message: `Data Message where Id ${messageID} Not Found`,
+        });
+      }
+    } catch (error) {
+      res.status(500).send({
+        error: error.message || "Internal Server Error",
+      });
+    }
+  }
 }
 
 module.exports = MessageController;
