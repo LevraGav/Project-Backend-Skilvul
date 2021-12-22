@@ -5,13 +5,8 @@ const dotenv = require("dotenv");
 const express = require("express");
 const bodyParser = require("body-parser");
 const routes = require("./routes");
-<<<<<<< HEAD
 const errorHandler = require("./middleware/errorHandler");
 const port = process.env.PORT;
-=======
-
-const port = process.env.PORT || 3000;
->>>>>>> 6460800705b8e879439f00c87257f7a766ce5b65
 
 async function main() {
   try {
@@ -27,10 +22,7 @@ async function main() {
     app.use(express.json());
     app.use(routes);
     app.use(bodyParser.json());
-<<<<<<< HEAD
     app.use(errorHandler);
-=======
->>>>>>> 6460800705b8e879439f00c87257f7a766ce5b65
 
     // Running Server
     app.listen(port, () => {
@@ -43,8 +35,4 @@ async function main() {
   }
 }
 
-<<<<<<< HEAD
 main();
-=======
-main();
->>>>>>> 6460800705b8e879439f00c87257f7a766ce5b65
