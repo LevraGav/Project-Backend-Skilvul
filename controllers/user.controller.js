@@ -4,7 +4,7 @@ const { hashPassword } = require("../helpers/bcrypt");
 
 class UserController {
   // GET All User
-  static async getAllUser(req, res) {
+  static async getAllUser(req, res, next) {
     try {
       const dataUser = await USER_MODEL.findAll({
         attributes: {
@@ -18,19 +18,18 @@ class UserController {
           users: dataUser,
         });
       } else {
-        res.status(404).send({
+        next({
+          code: 404,
           message: "Data Users is Empty",
         });
       }
     } catch (error) {
-      res.status(500).send({
-        error: error.message || "Internal Server Error",
-      });
+      next(error);
     }
   }
 
   // GET User by Id
-  static async getUserbyId(req, res) {
+  static async getUserbyId(req, res, next) {
     try {
       const userID = req.params.id;
 
@@ -49,29 +48,23 @@ class UserController {
           users: dataUser,
         });
       } else {
-        res.status(404).send({
+        next({
+          code: 404,
           message: `Data User Id ${userID} Not Found`,
         });
       }
     } catch (error) {
-      res.status(500).send({
-        error: error.message || "Internal Server Error",
-      });
+      next(error);
     }
   }
 
   // UPDATE User by Id
-  static async updateUserById(req, res) {
+  static async updateUserById(req, res, next) {
     try {
       const userID = req.params.id;
 
-      const { fullname, email, username, password, avatar, role_id } = req.body;
+      const { email, username, password } = req.body;
 
-      const dataUser = await USER_MODEL.findOne({
-        where: {
-          user_id: Number(userID),
-        },
-      });
       const filterQuery = {};
       if (username) {
         filterQuery.username = username;
@@ -90,16 +83,23 @@ class UserController {
         const account = req.userAccount;
         if (Number(userID) !== Number(account?.user_id)) {
           res.status(400).send({
-            message: "Password unchange",
+            message: "Access Denied! Password failed to change",
           });
         } else {
           req.body.password = hashPassword(password);
         }
       }
 
+      const dataUser = await USER_MODEL.findOne({
+        where: {
+          user_id: Number(userID),
+        },
+      });
+
       if (dataUser) {
         if (existingUser && Number(userID) !== Number(existingUser.user_id)) {
-          res.status(400).send({
+          next({
+            code: 400,
             message: "Email or Username already exists",
           });
         } else {
@@ -114,19 +114,18 @@ class UserController {
           });
         }
       } else {
-        res.status(404).send({
+        next({
+          code: 404,
           message: `Data User Id ${userID} Not Found`,
         });
       }
     } catch (error) {
-      res.status(500).send({
-        error: error.message || "Internal Server Error",
-      });
+      next(error);
     }
   }
 
   // DELETE User by Id
-  static async deleteUserById(req, res) {
+  static async deleteUserById(req, res, next) {
     try {
       const userID = req.params.id;
 
@@ -147,14 +146,13 @@ class UserController {
           deletedUser: dataUser,
         });
       } else {
-        res.status(404).send({
+        next({
+          code: 404,
           message: `Data User Id ${userID} Not Found`,
         });
       }
     } catch (error) {
-      res.status(500).send({
-        error: error.message || "Internal Server Error",
-      });
+      next(error);
     }
   }
 }

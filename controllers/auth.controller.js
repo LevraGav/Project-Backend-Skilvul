@@ -6,7 +6,7 @@ const { generateToken } = require("../helpers/jwt");
 
 class AuthController {
   // Register
-  static async Register(req, res) {
+  static async Register(req, res, next) {
     try {
       const { fullname, email, username, password, avatar } = req.body;
 
@@ -26,7 +26,8 @@ class AuthController {
         });
         // Check allowed username and email
         if (dataUsers) {
-          res.status(400).send({
+          next({
+            code: 400,
             message: "Email or Username already exists",
           });
           return;
@@ -51,23 +52,17 @@ class AuthController {
         }
       }
     } catch (error) {
-      if (error.name === "SequelizeValidationError") {
-        const messages = error.errors.map((err) => err.message);
-        res.status(400).json({ messages });
-      } else {
-        res.status(500).send({
-          error: error.message || "Internal Server Error",
-        });
-      }
+      next(error);
     }
   }
 
   // Login
-  static async Login(req, res) {
+  static async Login(req, res, next) {
     const { username, password } = req.body;
 
     if (!username || !password) {
-      res.status(400).send({
+      next({
+        code: 400,
         message: "Username and Password can't be empty",
       });
     } else {
@@ -100,12 +95,14 @@ class AuthController {
             token: accessToken,
           });
         } else {
-          res.status(401).send({
+          next({
+            code: 401,
             message: "Invalid Username or Password!",
           });
         }
       } else {
-        res.status(401).send({
+        next({
+          code: 401,
           message: "Invalid Username or Password!",
         });
       }

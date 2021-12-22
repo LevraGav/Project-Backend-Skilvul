@@ -6,7 +6,7 @@ dotenv.config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const routes = require("./routes");
-
+const errorHandler = require("./middleware/errorHandler");
 const port = process.env.PORT;
 
 async function main() {
@@ -22,6 +22,7 @@ async function main() {
     app.use(express.json());
     app.use(routes);
     app.use(bodyParser.json());
+    app.use(errorHandler);
 
     // Running Server
     app.listen(port, () => {

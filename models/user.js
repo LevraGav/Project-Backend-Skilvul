@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           isEmail: {
             args: true,
-            msg: "Invalid Format Email. Example: foo@bar.com",
+            msg: "Invalid email address format! Example: greecotopia@email.com",
           },
         },
       },
@@ -38,10 +38,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           is: {
             args: ["^[^0-9][^/_!@#$%^&*.]{5,}"],
-            msg: `Username minimal 6 karakter, huruf pertama tidak boleh angka, tidak boleh mengandung simbol`,
-          },
-          notEmpty: {
-            msg: `Username can't be empty`,
+            msg: "Username must have at least 6 characters, the first letter cannot be a number, and must not contain any symbols",
           },
         },
       },
@@ -52,10 +49,7 @@ module.exports = (sequelize, DataTypes) => {
             args: [
               "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[/!@#$%^&*.])(?=.{8,})",
             ],
-            msg: "Password minimal 8 karater terdiri dari huruf besar dan kecil, angka, simbol(!@#$%^&*)",
-          },
-          notEmpty: {
-            msg: `Password can't be empty`,
+            msg: "Password must have at least 8 characters consisting of uppercase and lowercase letters, numbers, symbols(!@#$%^&*)",
           },
         },
       },
@@ -69,6 +63,18 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       role_id: DataTypes.INTEGER,
+      role_id: {
+        type: DataTypes.INTEGER,
+        validate: {
+          isIn: {
+            args: [[1, 2]],
+            msg: "'role_id' must be 1 (admin) or 2 (member)",
+          },
+          notEmpty: {
+            msg: "Role can't be empty",
+          },
+        },
+      },
     },
     {
       hooks: {
