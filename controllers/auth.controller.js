@@ -74,6 +74,8 @@ class AuthController {
           model: Role,
         },
       });
+      console.log(password, "<<<password");
+      console.log(dataUser.password, "<< data user");
       if (dataUser) {
         // jika data user ada
         const checkPw = comparePassword(password, dataUser.password);
@@ -97,7 +99,7 @@ class AuthController {
         } else {
           next({
             code: 401,
-            message: "Invalid Username or Password!",
+            message: "Invalid Password!",
           });
         }
       } else {

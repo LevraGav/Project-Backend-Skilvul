@@ -38,12 +38,12 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           is: {
             args: ["^[^0-9][^/_!@#$%^&*.]{5,}"],
-            msg: "Username must have at least 6 characters, the first letter cannot be a number, and must not contain any symbols",
+            msg: "Username must have at least 6 characters and the first letter cannot be a number",
           },
         },
       },
       password: {
-        type: DataTypes.STRING(40),
+        type: DataTypes.STRING,
         validate: {
           is: {
             args: [
