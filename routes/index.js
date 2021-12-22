@@ -7,10 +7,11 @@ const userRoutes = require("./user");
 const authRoutes = require("./auth");
 const forumRoutes = require("./forum");
 const tagRoutes = require("./tag");
+const issueRoutes = require("./issues");
+
 const favoriteissuesRoutes = require("./favoriteissues");
 const commentRoutes = require("./comment");
 const messageRoutes = require("./message");
-
 
 // Check ping
 router.get("/ping", (req, res) => {
@@ -32,6 +33,8 @@ router.use("/users", userRoutes);
 router.use("/forums", forumRoutes);
 // Path Tags
 router.use("/tags", tagRoutes);
+// Path Issues
+router.use("/issues", issueRoutes);
 // Path Favorite_Issues
 router.use("/favoriteissues", favoriteissuesRoutes);
 // Path Comments
