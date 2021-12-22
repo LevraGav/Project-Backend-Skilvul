@@ -59,12 +59,12 @@ class ForumController {
 
       if (dataForum) {
         res.status(200).send({
-          message: `Success Get Forum Id ${forumID}`,
+          message: `Success Get Forum where Forum Id is ${forumID}`,
           Forums: dataForum,
         });
       } else {
         res.status(404).send({
-          message: `Data Forum Id ${forumID} Not Found`,
+          message: `Data Forum where Forum Id is ${forumID} Not Found`,
         });
       }
     } catch (error) {
@@ -102,12 +102,12 @@ class ForumController {
           },
         });
         res.status(200).send({
-          message: `Data Forum Id ${forumID} was Updated Successfully`,
+          message: `Data Forum where Forum Id is ${forumID} was Updated Successfully`,
           updatedForum: updateForum,
         });
       } else {
         res.status(404).send({
-          message: `Data Forum Id ${forumID} Not Found`,
+          message: `Data Forum where Forum Id is ${forumID} Not Found`,
         });
       }
     } catch (error) {
@@ -135,12 +135,12 @@ class ForumController {
           },
         });
         res.status(200).send({
-          message: `Data Forum Id ${forumID} was Deleted Successfully`,
+          message: `Data Forum where Forum Id is ${forumID} was Deleted Successfully`,
           deletedForum: dataForum,
         });
       } else {
         res.status(404).send({
-          message: `Data Forum Id ${forumID} Not Found`,
+          message: `Data Forum where Forum Id is ${forumID} Not Found`,
         });
       }
     } catch (error) {
