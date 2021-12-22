@@ -43,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       password: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(40),
         validate: {
           is: {
             args: [

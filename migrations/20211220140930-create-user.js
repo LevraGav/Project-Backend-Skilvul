@@ -22,7 +22,7 @@ module.exports = {
       },
       password: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(40),
       },
       avatar: {
         type: Sequelize.ENUM("img1", "img2", "img3"),
