@@ -1,6 +1,5 @@
 // Dotenv
 const dotenv = require("dotenv");
-dotenv.config();
 
 // Import Module
 const express = require("express");
@@ -14,6 +13,7 @@ async function main() {
     const app = express();
 
     // Middleware
+    dotenv.config();
     app.use(
       express.urlencoded({
         extended: true,
