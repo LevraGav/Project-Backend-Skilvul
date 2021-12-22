@@ -5,6 +5,7 @@ const router = express.Router();
 // Router
 const userRoutes = require("./user");
 const authRoutes = require("./auth");
+const forumRoutes = require("./forum");
 const tagRoutes = require("./tag");
 const messageRoutes = require("./message");
 
@@ -24,6 +25,8 @@ router.get("/", (req, res) => {
 router.use("/auth", authRoutes);
 // Path User
 router.use("/users", userRoutes);
+// Path Forums
+router.use("/forums", forumRoutes);
 // Path Tags
 router.use("/tags", tagRoutes);
 // Path Messages
