@@ -19,7 +19,7 @@ class CommentController {
       COMMENT_MODEL.create(newComment)
         .then(result => {
         res.status(200).json({ 
-          message: 'New Comment was posted successfully!', 
+          message: 'Success post new Comment!', 
           result 
          })
         })
@@ -66,7 +66,7 @@ class CommentController {
       })
       res.status(200).send(
         {
-          message: "New reply comment was posted successfully!",
+          message: "Success post new Reply Comment!",
           data: newRepComment
         }
       )
@@ -123,12 +123,12 @@ class CommentController {
 
       if (dataComment) {
         res.status(200).send({
-          message: `Success Get Comment Id ${commentID}`,
+          message: `Success Get Comment where Comment Id is ${commentID}`,
           comments: dataComment,
         });
       } else {
         res.status(404).send({
-          message: `Data Comment Id ${commentID} Not Found`,
+          message: `Data Comment where Comment Id is ${commentID} Not Found`,
         });
       }
     } catch (error) {
@@ -147,7 +147,7 @@ class CommentController {
 
       if (dataComment) {
         res.status(200).send({
-          message: `Success Get Comment`,
+          message: `Success Get Comment where Issue Id is ${issue}`,
           comments: dataComment,
         });
       } else {
@@ -163,7 +163,7 @@ class CommentController {
   }
 
   // DELETE Comment by Id
-  static async deleteCommentById(req, res, next) {
+  static async deleteCommentById(req, res) {
     try {
       const commentID = req.params.id;
       const userID = req.userAccount.user_id
@@ -183,17 +183,17 @@ class CommentController {
         });
         if(commentUser){
           res.status(200).send({
-            message: `Data Comment Id ${commentID} was Deleted Successfully`,
+            message: `Data Comment where Comment Id is ${commentID} was Deleted Successfully`,
             deletedComment: dataComment,
           });
         } else{
           res.status(404).send({
-            message: `Cannot delete comment because this comment is not authored by you`,
+            message: `Cannot delete Comment because this comment is not authored by you`,
           });
         }
       } else {
         res.status(404).send({
-          message: `Data Comment Id ${commentID} Not Found`,
+          message: `Data Comment where Comment Id is ${commentID} Not Found`,
         });
       }
     } catch (error) {

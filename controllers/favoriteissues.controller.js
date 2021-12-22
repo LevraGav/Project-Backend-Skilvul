@@ -44,6 +44,71 @@ class FavoriteIssuesController {
       });
     }
   }
+
+  // GET All Favorite Issue by User Id
+  static async getFavoriteIssuesByUserId(req, res) {
+    try {
+      const user = req.params.user
+
+      const dataFavIssues = await FAVORITEISSUES_MODEL.findAll({user : user})
+
+      if (dataFavIssues) {
+        res.status(200).send({
+          message: `Success Get Your Favorite Issues`,
+          favoriteIssues: dataFavIssues,
+        });
+      } else {
+        res.status(404).send({
+          message: `Data Favorite Issue Not Found`,
+        });
+      }
+    } catch (error) {
+      res.status(500).send({
+        error: error.message || "Internal Server Error",
+      });
+    }
+  }
+
+  // DELETE Favorite Issue by Id
+  static async deleteFavoriteIssueById(req, res) {
+    try {
+      const issueID = req.params.id;
+      const userID = req.userAccount.user_id
+     
+      const dataFavIssues = await FAVORITEISSUES_MODEL.findOne({
+        where: {
+          issue_id: Number(issueID),
+        },
+      });
+
+      if (dataFavIssues) {
+        const favIssueUser = await FAVORITEISSUES_MODEL.destroy({
+          where: {
+            issue_id: Number(issueID),
+            user_id: Number(userID),
+          },
+        });
+        if(favIssueUser){
+          res.status(200).send({
+            message: `Data Favorite Issue where Issue Id is ${issueID} was Deleted Successfully`,
+            deletedFavoriteIssue: dataFavIssues,
+          });
+        } else{
+          res.status(404).send({
+            message: `Cannot delete Issue from Favorite because this Favorite Issue is not yours`,
+          });
+        }
+      } else {
+        res.status(404).send({
+          message: `Data Favorite Issue where Issue Id is ${issueID} Not Found`,
+        });
+      }
+    } catch (error) {
+      res.status(500).send({
+        error: error.message || "Internal Server Error",
+      });
+    }
+  }
 }
 
 module.exports = FavoriteIssuesController;

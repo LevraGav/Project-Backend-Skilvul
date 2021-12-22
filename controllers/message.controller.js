@@ -63,12 +63,12 @@ class MessageController {
           },
         });
         res.status(200).send({
-          message: `Data Message where Id ${messageID} was Deleted Successfully`,
+          message: `Data Message where Message Id is ${messageID} was Deleted Successfully`,
           deletedMessage: dataMessage,
         });
       } else {
         res.status(404).send({
-          message: `Data Message where Id ${messageID} Not Found`,
+          message: `Data Message where Message Id is ${messageID} Not Found`,
         });
       }
     } catch (error) {
