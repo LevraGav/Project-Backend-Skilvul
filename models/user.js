@@ -63,7 +63,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           isIn: {
             args: [[1, 2]],
-            msg: "'role_id' must be 1 (admin) or 2 (member)",
+            msg: "You can only select role_id 1 (admin) or 2 (member)",
           },
           notEmpty: {
             msg: "Role can't be empty",

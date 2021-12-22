@@ -63,7 +63,7 @@ class UserController {
     try {
       const userID = req.params.id;
 
-      const { email, username, password } = req.body;
+      const { email, username, password, role_id } = req.body;
 
       const filterQuery = {};
       if (username) {
@@ -79,11 +79,13 @@ class UserController {
         },
       });
 
+      const account = req.userAccount;
+
       if (password) {
-        const account = req.userAccount;
         if (Number(userID) !== Number(account?.user_id)) {
-          res.status(400).send({
-            error: "Access Denied! Password failed to change",
+          next({
+            code: 400,
+            message: "Access Denied! Password failed to change",
           });
         } else {
           const passPattern = new RegExp(
@@ -101,6 +103,14 @@ class UserController {
         }
       }
 
+      if (role_id) {
+        if (account?.roleName !== "admin") {
+          next({
+            code: 400,
+            message: "Access Denied! Role Id failed to change",
+          });
+        }
+      }
       const dataUser = await USER_MODEL.findOne({
         where: {
           user_id: Number(userID),
