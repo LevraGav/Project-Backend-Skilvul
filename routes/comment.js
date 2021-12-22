@@ -8,6 +8,7 @@ const authentication = require("../middleware/authentication");
 router.use(authentication);
 router.get("/", CommentController.getAllComments);
 router.get("/:id", CommentController.getCommentById);
+router.get("/issue/:id", CommentController.getCommentByIssueId)
 router.post("/", CommentController.postNewComment);
 router.post("/:id", CommentController.postNewRepComment);
 

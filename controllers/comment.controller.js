@@ -137,6 +137,30 @@ class CommentController {
       });
     }
   }
+
+  // GET All Comment by Issue Id
+  static async getCommentByIssueId(req, res) {
+    try {
+      const issue = req.params.issue
+
+      const dataComment = await COMMENT_MODEL.findAll({issue : issue})
+
+      if (dataComment) {
+        res.status(200).send({
+          message: `Success Get Comment`,
+          comments: dataComment,
+        });
+      } else {
+        res.status(404).send({
+          message: `Data Comment Not Found`,
+        });
+      }
+    } catch (error) {
+      res.status(500).send({
+        error: error.message || "Internal Server Error",
+      });
+    }
+  }
 }
 
 module.exports = CommentController;
