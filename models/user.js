@@ -1,13 +1,9 @@
 "use strict";
+const req = require("express/lib/request");
 const { Model } = require("sequelize");
 const { hashPassword } = require("../helpers/bcrypt");
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
       User.belongsTo(models.Role, {
         foreignKey: "role_id",
@@ -37,8 +33,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         validate: {
           is: {
-            args: ["^[^0-9][^/_!@#$%^&*.]{5,}"],
-            msg: "Username must have at least 6 characters and the first letter cannot be a number",
+            args: ["^[^0-9][^[/!@#$_%^&*.]{5,}"],
+            msg: "Username must have at least 6 characters, the first letter cannot be a number, and must not contain any symbols(!@#$_%^&*). Example: gre3C0topi4",
           },
         },
       },
@@ -47,9 +43,9 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           is: {
             args: [
-              "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[/!@#$%^&*.])(?=.{8,})",
+              "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[_/!@#$%^&*.])(?=.{8,})",
             ],
-            msg: "Password must have at least 8 characters consisting of uppercase and lowercase letters, numbers, symbols(!@#$%^&*)",
+            msg: "Password must have at least 8 characters consisting of uppercase and lowercase letters, numbers, symbols(!@#$_%^&*). Example: Gre3c0topi4!",
           },
         },
       },
@@ -62,7 +58,6 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      role_id: DataTypes.INTEGER,
       role_id: {
         type: DataTypes.INTEGER,
         validate: {

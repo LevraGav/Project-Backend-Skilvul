@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
     account?.roleName !== "admin"
   ) {
     res.status(403).send({
-      error: "Forbidden User",
+      error: "Access Denied!",
     });
   } else {
     next();

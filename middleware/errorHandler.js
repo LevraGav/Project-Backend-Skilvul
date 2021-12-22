@@ -4,8 +4,8 @@ module.exports = (err, req, res, next) => {
       error: err.message,
     });
   } else if (err.name === "SequelizeValidationError") {
-    const messages = err.errors.map((error) => error.message);
-    res.status(400).json({ messages });
+    const errors = err.errors.map((error) => error.message);
+    res.status(400).json({ errors });
   } else {
     res.status(500).json({
       error: error.message || "Internal Server Error",

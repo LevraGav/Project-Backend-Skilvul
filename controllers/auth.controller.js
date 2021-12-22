@@ -74,8 +74,6 @@ class AuthController {
           model: Role,
         },
       });
-      console.log(password, "<<<password");
-      console.log(dataUser.password, "<< data user");
       if (dataUser) {
         // jika data user ada
         const checkPw = comparePassword(password, dataUser.password);

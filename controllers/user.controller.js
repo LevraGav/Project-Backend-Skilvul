@@ -83,10 +83,21 @@ class UserController {
         const account = req.userAccount;
         if (Number(userID) !== Number(account?.user_id)) {
           res.status(400).send({
-            message: "Access Denied! Password failed to change",
+            error: "Access Denied! Password failed to change",
           });
         } else {
-          req.body.password = hashPassword(password);
+          const passPattern = new RegExp(
+            "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[_/!@#$%^&*.])(?=.{8,})"
+          );
+          if (passPattern.test(password)) {
+            req.body.password = hashPassword(password);
+          } else {
+            next({
+              code: 400,
+              message:
+                "Password must have at least 8 characters consisting of uppercase and lowercase letters, numbers, symbols(!@#$_%^&*). Example: Gre3c0topi4!",
+            });
+          }
         }
       }
 
