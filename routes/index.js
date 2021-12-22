@@ -6,6 +6,7 @@ const router = express.Router();
 const userRoutes = require("./user");
 const authRoutes = require("./auth");
 const tagRoutes = require("./tag");
+const messageRoutes = require("./message");
 
 // Check ping
 router.get("/ping", (req, res) => {
@@ -25,5 +26,7 @@ router.use("/auth", authRoutes);
 router.use("/users", userRoutes);
 // Path Tags
 router.use("/tags", tagRoutes);
+// Path Messages
+router.use("/messages", messageRoutes);
 
 module.exports = router;
