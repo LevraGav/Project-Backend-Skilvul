@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -8,16 +8,17 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-     await queryInterface.addConstraint('Favorite_Issues', {
-      fields: ['issue_id'],
-      type: 'foreign key',
-      name: 'fk_issue_in_favoriteissue',
-      references: { //Required field
-        table: 'Issues',
-        field: 'id'
+    await queryInterface.addConstraint("Favorite_Issues", {
+      fields: ["issue_id"],
+      type: "foreign key",
+      name: "fk_issue_in_favoriteissue",
+      references: {
+        //Required field
+        table: "Issues",
+        field: "issue_id",
       },
-      onDelete: 'cascade',
-      onUpdate: 'cascade'
+      onDelete: "cascade",
+      onUpdate: "cascade",
     });
   },
 
@@ -28,6 +29,10 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-     await queryInterface.removeConstraint('Favorite_Issues', 'fk_issue_in_favoriteissue', {})
-  }
+    await queryInterface.removeConstraint(
+      "Favorite_Issues",
+      "fk_issue_in_favoriteissue",
+      {}
+    );
+  },
 };
