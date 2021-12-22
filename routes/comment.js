@@ -11,5 +11,6 @@ router.get("/:id", CommentController.getCommentById);
 router.get("/issue/:id", CommentController.getCommentByIssueId)
 router.post("/", CommentController.postNewComment);
 router.post("/:id", CommentController.postNewRepComment);
+router.delete("/:id", CommentController.deleteCommentById);
 
 module.exports = router;

@@ -105,7 +105,7 @@ class CommentController {
       }
     } catch (error) {
       res.status(500).send({
-        error: error.message || "Internal Server Error",
+        error:  "Internal Server Error",
       });
     }
   }
@@ -153,6 +153,47 @@ class CommentController {
       } else {
         res.status(404).send({
           message: `Data Comment Not Found`,
+        });
+      }
+    } catch (error) {
+      res.status(500).send({
+        error: error.message || "Internal Server Error",
+      });
+    }
+  }
+
+  // DELETE Comment by Id
+  static async deleteCommentById(req, res, next) {
+    try {
+      const commentID = req.params.id;
+      const userID = req.userAccount.user_id
+     
+      const dataComment = await COMMENT_MODEL.findOne({
+        where: {
+          comment_id: Number(commentID),
+        },
+      });
+
+      if (dataComment) {
+        const commentUser = await COMMENT_MODEL.destroy({
+          where: {
+            comment_id: Number(commentID),
+            user_id: Number(userID),
+          },
+        });
+        if(commentUser){
+          res.status(200).send({
+            message: `Data Comment Id ${commentID} was Deleted Successfully`,
+            deletedComment: dataComment,
+          });
+        } else{
+          res.status(404).send({
+            message: `Cannot delete comment because this comment is not authored by you`,
+          });
+        }
+      } else {
+        res.status(404).send({
+          message: `Data Comment Id ${commentID} Not Found`,
         });
       }
     } catch (error) {
