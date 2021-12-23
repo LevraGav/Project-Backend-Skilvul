@@ -12,17 +12,10 @@ class UserController {
         },
       });
 
-      if (dataUser.length != 0) {
-        res.status(200).send({
-          message: "Success Get All Users",
-          users: dataUser,
-        });
-      } else {
-        next({
-          code: 404,
-          message: "Data Users is Empty",
-        });
-      }
+      res.status(200).send({
+        message: "Success Get All Users",
+        users: dataUser,
+      });
     } catch (error) {
       next(error);
     }
