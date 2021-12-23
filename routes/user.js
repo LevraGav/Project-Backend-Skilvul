@@ -10,8 +10,8 @@ router.use(authentication);
 router.get("/", UserController.getAllUser);
 
 // Authorization
-router.use("/:id", authorization);
 router.get("/:id", UserController.getUserbyId);
+router.use("/:id", authorization);
 router.put("/:id", UserController.updateUserById);
 router.delete("/:id", UserController.deleteUserById);
 

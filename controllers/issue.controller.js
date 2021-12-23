@@ -2,30 +2,31 @@ const ISSUE_MODEL = require("../models").Issue;
 
 class IssueController {
   // POST New Issue
-	static postNewIssue(req, res) {
-    try{
+  static postNewIssue(req, res) {
+    try {
       const newIssue = {
         title: req.body.title,
-		summary: req.body.summary,
-		author_name: req.body.author_name,
+        summary: req.body.summary,
+        author_name: req.body.author_name,
         image: req.body.image,
-		likes: req.body.likes,
-		comments: req.body.comments,
+        likes: req.body.likes,
+        comments: req.body.comments,
         tag_id: req.body.tag_id,
-		forum_id: req.body.forum_id
-      }
+        forum_id: req.body.forum_id,
+      };
       ISSUE_MODEL.create(newIssue)
-        .then(result => {
-        res.status(200).json({ 
-          message: 'Success post new Issue!', 
-          result 
-         })
+        .then((result) => {
+          res.status(200).json({
+            message: "Success post new Issue!",
+            result,
+          });
         })
-        .catch(err => res.status(400).json({ message: err }))
+        .catch((err) => res.status(400).json({ message: err }));
     } catch (error) {
       res.status(500).send({
-        error: error.message || "Internal Server Error",
+        message: "Internal Server Error",
       });
+      log;
     }
   }
 
@@ -51,14 +52,14 @@ class IssueController {
     }
   }
 
-	// GET Issue by Id
+  // GET Issue by Id
   static async getIssuebyId(req, res) {
     try {
       const issueID = req.params.id;
 
       const dataIssue = await ISSUE_MODEL.findOne({
         where: {
-          id: Number(issueID),
+          issue_id: Number(issueID),
         },
       });
 
@@ -79,37 +80,47 @@ class IssueController {
     }
   }
 
-	// UPDATE Issue by Id
+  // UPDATE Issue by Id
   static async updateIssueById(req, res) {
     try {
       const issueID = req.params.id;
-			console.log(issueID);
-      const { title, summary, author_name, image, likes, comments, description, tag_id, forum_id } = req.body;
+      console.log(issueID);
+      const {
+        title,
+        summary,
+        author_name,
+        image,
+        likes,
+        comments,
+        description,
+        tag_id,
+        forum_id,
+      } = req.body;
 
       const updateIssue = {
         title: title,
-		summary: summary,
-		author_name: author_name,
+        summary: summary,
+        author_name: author_name,
         image: image,
-		likes: likes,
-		comments: comments,
+        likes: likes,
+        comments: comments,
         description: description,
-		createdAt: new Date(),
-		updatedAt: new Date(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
         tag_id: tag_id,
-		forum_id: forum_id
+        forum_id: forum_id,
       };
 
       const dataIssue = await ISSUE_MODEL.findOne({
         where: {
-          id: Number(issueID),
+          issue_id: Number(issueID),
         },
       });
 
       if (dataIssue) {
         await ISSUE_MODEL.update(updateIssue, {
           where: {
-            id: Number(issueID),
+            issue_id: Number(issueID),
           },
         });
         res.status(200).send({
@@ -128,21 +139,21 @@ class IssueController {
     }
   }
 
-	// DELETE Issue by Id
+  // DELETE Issue by Id
   static async deleteIssueById(req, res) {
     try {
       const issueID = req.params.id;
 
       const dataIssue = await ISSUE_MODEL.findOne({
         where: {
-          id: Number(issueID),
+          issue_id: Number(issueID),
         },
       });
 
       if (dataIssue) {
         await ISSUE_MODEL.destroy({
           where: {
-            id: Number(issueID),
+            issue_id: Number(issueID),
           },
         });
         res.status(200).send({
@@ -161,14 +172,18 @@ class IssueController {
     }
   }
 
-   // GET All Issue by Forum Id
-   static async getIssuebyForumId(req, res) {
+  // GET All Issue by Forum Id
+  static async getIssuebyForumId(req, res) {
     try {
-      const forum = req.params.forum
+      const forum = req.params.id;
 
-      const dataIssue = await ISSUE_MODEL.findAll({forum : forum})
+      const dataIssue = await ISSUE_MODEL.findAll({
+        where: {
+          forum_id: forum,
+        },
+      });
 
-      if (dataIssue) {
+      if (dataIssue.length !== 0) {
         res.status(200).send({
           message: `Success Get Issue`,
           issues: dataIssue,
@@ -181,23 +196,6 @@ class IssueController {
     } catch (error) {
       res.status(500).send({
         error: error.message || "Internal Server Error",
-      });
-    }
-  }
-
-  // GET All Issue by Query
-  static async getIssuebyQuery(req, res) {
-    try {
-      const params = req.query;
-      const dataIssue = await ISSUE_MODEL.findAll(params);
-
-      res.status(200).send({
-        message: "Success Get Data Issue by Params",
-        issue: dataIssue,
-      });
-    } catch (error) {
-      res.status(500).send({
-        message: error.message,
       });
     }
   }

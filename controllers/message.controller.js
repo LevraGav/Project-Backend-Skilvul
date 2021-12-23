@@ -2,20 +2,20 @@ const MESSAGE_MODEL = require("../models").Message;
 
 class MessageController {
   // POST New Message
-	static postNewMessage(req, res) {
-    try{
+  static postNewMessage(req, res) {
+    try {
       const newMessage = {
         context: req.body.context,
-        user_id: req.userAccount.user_id
-      }
+        user_id: req.userAccount.user_id,
+      };
       MESSAGE_MODEL.create(newMessage)
-        .then(result => {
-        res.status(200).json({ 
-            message: 'Success post new message!', 
-            result 
-         })
+        .then((result) => {
+          res.status(200).json({
+            message: "Success post new message!",
+            result,
+          });
         })
-        .catch(err => res.status(400).json({ message: err }))
+        .catch((err) => res.status(400).json({ message: err }));
     } catch (error) {
       res.status(500).send({
         error: error.message || "Internal Server Error",

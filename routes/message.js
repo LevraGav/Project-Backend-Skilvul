@@ -7,8 +7,8 @@ const authorization = require("../middleware/authorization");
 
 // Authentication
 router.use(authentication);
-router.get("/", MessageController.getAllMessage);
+router.get("/", authorization, MessageController.getAllMessage);
 router.post("/", MessageController.postNewMessage);
-router.delete("/:id", authorization, MessageController.deleteMessageById)
+router.delete("/:id", authorization, MessageController.deleteMessageById);
 
 module.exports = router;

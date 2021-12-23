@@ -97,7 +97,7 @@ class AuthController {
         } else {
           next({
             code: 401,
-            message: "Invalid Password!",
+            message: "Invalid Username or Password!",
           });
         }
       } else {

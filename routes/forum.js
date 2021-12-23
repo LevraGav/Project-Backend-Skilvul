@@ -5,10 +5,11 @@ const ForumController = require("../controllers/forum.controller");
 const authentication = require("../middleware/authentication");
 const authorization = require("../middleware/authorization");
 
-router.post("/", authentication, authorization, ForumController.postNewForum);
-router.get("/",  ForumController.getAllForums);
+router.get("/", ForumController.getAllForums);
 router.get("/:id", ForumController.getForumbyId);
-router.put("/:id", authentication, authorization, ForumController.updateForumById);
-router.delete("/:id", authentication, authorization, ForumController.deleteForumById);
+router.use(authentication);
+router.post("/", authorization, ForumController.postNewForum);
+router.put("/:id", authorization, ForumController.updateForumById);
+router.delete("/:id", authorization, ForumController.deleteForumById);
 
 module.exports = router;

@@ -2,21 +2,21 @@ const FORUM_MODEL = require("../models").Forum;
 
 class ForumController {
   // POST New Forum
-	static postNewForum(req, res) {
-    try{
+  static postNewForum(req, res) {
+    try {
       const newForum = {
         title: req.body.title,
-				image: req.body.image,
-				description: req.body.description
-      }
+        image: req.body.image,
+        description: req.body.description,
+      };
       FORUM_MODEL.create(newForum)
-        .then(result => {
-        res.status(200).json({ 
-          message: 'Success post new Forum!', 
-          result 
-         })
+        .then((result) => {
+          res.status(200).json({
+            message: "Success post new Forum!",
+            result,
+          });
         })
-        .catch(err => res.status(400).json({ message: err }))
+        .catch((err) => res.status(401).json({ message: err }));
     } catch (error) {
       res.status(500).send({
         error: error.message || "Internal Server Error",
@@ -46,7 +46,7 @@ class ForumController {
     }
   }
 
-	// GET Forum by Id
+  // GET Forum by Id
   static async getForumbyId(req, res) {
     try {
       const forumID = req.params.id;
@@ -74,19 +74,19 @@ class ForumController {
     }
   }
 
-	// UPDATE Forum by Id
+  // UPDATE Forum by Id
   static async updateForumById(req, res) {
     try {
       const forumID = req.params.id;
-			console.log(forumID);
+      console.log(forumID);
       const { title, image, description } = req.body;
 
       const updateForum = {
         title: title,
-				image: image,
-				description: description,
-				createdAt: new Date(),
-				updatedAt: new Date()
+        image: image,
+        description: description,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
       const dataForum = await FORUM_MODEL.findOne({
@@ -117,7 +117,7 @@ class ForumController {
     }
   }
 
-	// DELETE Forum by Id
+  // DELETE Forum by Id
   static async deleteForumById(req, res) {
     try {
       const forumID = req.params.id;

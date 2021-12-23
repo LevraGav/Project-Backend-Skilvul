@@ -2,15 +2,16 @@ const express = require("express");
 const router = express.Router();
 
 const IssueController = require("../controllers/issue.controller");
-// const authentication = require("../middleware/authentication");
-// const authorization = require("../middleware/authorization");
+const authentication = require("../middleware/authentication");
+const authorization = require("../middleware/authorization");
 
-router.post("/", IssueController.postNewIssue);
-router.get("/",  IssueController.getAllIssues);
+router.get("/", IssueController.getAllIssues);
 router.get("/:id", IssueController.getIssuebyId);
-router.get("/issues/forums/:id", IssueController.getIssuebyForumId);
-router.get("/issues/search", IssueController.getIssuebyQuery);
-router.put("/:id", IssueController.updateIssueById);
-router.delete("/:id", IssueController.deleteIssueById);
+router.get("/forums/:id", IssueController.getIssuebyForumId);
+
+router.use(authentication);
+router.post("/", authorization, IssueController.postNewIssue);
+router.put("/:id", authorization, IssueController.updateIssueById);
+router.delete("/:id", authorization, IssueController.deleteIssueById);
 
 module.exports = router;

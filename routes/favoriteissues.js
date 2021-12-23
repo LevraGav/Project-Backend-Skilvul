@@ -9,6 +9,13 @@ router.use(authentication);
 router.get("/", FavoriteIssuesController.getAllFavoriteIssues);
 router.get("/user/:id", FavoriteIssuesController.getFavoriteIssuesByUserId);
 router.post("/", FavoriteIssuesController.postNewFavoriteIssues);
-router.delete("/:id", FavoriteIssuesController.deleteFavoriteIssueById);
+router.delete(
+  "/user/:id",
+  FavoriteIssuesController.deleteFavoriteIssueByUserId
+);
+router.delete(
+  "/user/:userId/issue/:issueId",
+  FavoriteIssuesController.deleteFavoriteIssueByIssueId
+);
 
 module.exports = router;
