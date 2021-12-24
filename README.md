@@ -5,4 +5,8 @@ Member:
 - Tsania Warda L.
 - Devi Ayu Lestari <br />
 
-Mentor: Rizky Maulita Putri
+Mentor: Rizky Maulita Putri  
+
+Link Deploy : https://pure-thicket-57785.herokuapp.com/  
+Link Documentation API : https://documenter.getpostman.com/view/18343779/UVRDGkxT
+
