@@ -8,16 +8,17 @@
     "dialect": "mysql"
   },
   "test": {
-    "username": "root",
-    "password": null,
-    "database": "database_test",
-    "host": "127.0.0.1",
+    "username": "sql6460114",
+    "password": "7Hi9HdqJYS",
+    "database": "sql6460114",
+    "host": "sql6.freemysqlhosting.net",
     "dialect": "mysql"
   },
   "production": {
     "username": "sql6460114",
     "password": "7Hi9HdqJYS",
     "database": "sql6460114",
-    "host": "sql6.freemysqlhosting.net"
+    "host": "sql6.freemysqlhosting.net",
+    "dialect": "mysql"
   }
 }
